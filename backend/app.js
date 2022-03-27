@@ -18,6 +18,7 @@ const cardRouter = require('./routes/cards');
 const login = require('./controllers/login');
 const { createUser } = require('./controllers/users');
 const auth = require('./middleware/auth');
+const { corsPreflightHandler, corsMainHandler } = require('./middleware/cors');
 
 async function start() {
   await mongoose.connect('mongodb://localhost:27017/mestodb', {
@@ -37,6 +38,8 @@ start()
     app.use(express.urlencoded({ extended: true }));
     app.use(cookieParser());
     app.use(requestLogger);
+    app.use(corsPreflightHandler);
+    app.use(corsMainHandler);
     app.post('/signin', celebrate({
       body: Joi.object().keys({
         email: Joi.string().email().label('Email').required()
