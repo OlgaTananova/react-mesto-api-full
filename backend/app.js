@@ -4,6 +4,7 @@ const {
   celebrate, Joi, isCelebrateError,
 } = require('celebrate');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 const {
   ERR_BAD_REQUEST,
   ERR_SERVER_ERROR,
@@ -18,7 +19,15 @@ const cardRouter = require('./routes/cards');
 const login = require('./controllers/login');
 const { createUser } = require('./controllers/users');
 const auth = require('./middleware/auth');
-const { corsPreflightHandler, corsMainHandler } = require('./middleware/cors');
+
+const corsOptions = {
+  origin: [
+    'http://mestobyolga.nomoredomains.work',
+    'https://mestobyolga.nomoredomains.work',
+    'http://localhost:3000',
+  ],
+  optionsSuccessStatus: 200,
+};
 
 async function start() {
   await mongoose.connect('mongodb://localhost:27017/mestodb', {
@@ -38,8 +47,7 @@ start()
     app.use(express.urlencoded({ extended: true }));
     app.use(cookieParser());
     app.use(requestLogger);
-    app.use(corsPreflightHandler);
-    app.use(corsMainHandler);
+    app.use(cors(corsOptions));
     app.post('/signin', celebrate({
       body: Joi.object().keys({
         email: Joi.string().email().label('Email').required()

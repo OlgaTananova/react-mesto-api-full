@@ -9,7 +9,7 @@ const corsPreflightHandler = (req, res) => {
   const { method } = req;
   if (method === 'OPTIONS') {
     res.header('Access-Control-Allow-Methods', DEFAULT_ALLOWED_METHODS);
-    return res.end();
+    return res.send('Preflight');
   }
 };
 
