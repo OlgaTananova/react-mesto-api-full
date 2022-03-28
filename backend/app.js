@@ -26,7 +26,6 @@ const corsOptions = {
     'https://mestobyolga.nomoredomains.work',
     'http://localhost:3000',
   ],
-  optionsSuccessStatus: 200,
 };
 
 async function start() {
@@ -47,8 +46,7 @@ start()
     app.use(express.urlencoded({ extended: true }));
     app.use(cookieParser());
     app.use(requestLogger);
-    app.use(cors(corsOptions));
-    app.post('/signin', celebrate({
+    app.post('/signin', cors(corsOptions), celebrate({
       body: Joi.object().keys({
         email: Joi.string().email().label('Email').required()
           .messages({
