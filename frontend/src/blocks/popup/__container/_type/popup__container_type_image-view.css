@@ -1,0 +1,14 @@
+
+.popup__container_type_image-view {
+  width: fit-content;
+  height: fit-content;
+  padding: 0 0 25px 40px;
+  overflow: hidden;
+  box-shadow: none;
+}
+
+@media screen and (max-width: 530px) {
+  .popup__container_type_image-view {
+    padding: 0 0 11px 0;
+  }
+}
