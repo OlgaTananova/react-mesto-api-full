@@ -1,11 +1,11 @@
 const allowedCors = [
   'http://mestobyolga.nomoredomains.work',
   'https://mestobyolga.nomoredomains.work',
-  'http://localhost:3000',
+  'http://localhost:3000/',
 ];
 const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
 
-const corsPreflightHandler = (req, res) => {
+const corsHandler = (req, res, next) => {
   const { method } = req;
   const requestHeaders = req.headers['access-control-request-headers'];
   if (method === 'OPTIONS') {
@@ -13,9 +13,6 @@ const corsPreflightHandler = (req, res) => {
     res.header('Access-Control-Allow-Headers', requestHeaders);
     return res.end();
   }
-};
-
-const corsMainHandler = (req, res, next) => {
   const { origin } = req.headers;
   if (allowedCors.includes(origin)) {
     res.header('Access-Control-Allow-Origin', origin);
@@ -24,6 +21,5 @@ const corsMainHandler = (req, res, next) => {
 };
 
 module.exports = {
-  corsPreflightHandler,
-  corsMainHandler,
+  corsHandler,
 };

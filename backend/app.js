@@ -4,7 +4,7 @@ const {
   celebrate, Joi, isCelebrateError,
 } = require('celebrate');
 const cookieParser = require('cookie-parser');
-const { corsPreflightHandler, corsMainHandler } = require('./middleware/cors');
+const { corsHandler } = require('./middleware/cors');
 const {
   ERR_BAD_REQUEST,
   ERR_SERVER_ERROR,
@@ -13,7 +13,7 @@ const NotFoundError = require('./errors/NotFoundError');
 const { requestLogger, errorLogger } = require('./middleware/logger');
 
 const app = express();
-const { PORT = 3000 } = process.env;
+const { PORT = 5000 } = process.env;
 const userRouter = require('./routes/users');
 const cardRouter = require('./routes/cards');
 const login = require('./controllers/login');
@@ -34,7 +34,7 @@ async function start() {
 
 start()
   .then(() => {
-    app.use(corsPreflightHandler, corsMainHandler);
+    app.use(corsHandler);
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
     app.use(cookieParser());

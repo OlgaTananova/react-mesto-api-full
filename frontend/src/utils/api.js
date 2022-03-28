@@ -4,7 +4,6 @@ class Api {
   constructor({baseURL, headers}) {
     this._URL = baseURL;
     this._headers = headers;
-    this._jwt = localStorage.getItem('jwt');
   }
 
   _handleError(res, errorText) {
@@ -95,9 +94,8 @@ class Api {
 }
 //Экземпляр класса Api для сетевых запросов
 export const api = new Api({
-  baseURL: 'http://api.mestobyolga.nomoredomains.work',
+  baseURL: 'http://localhost:5000',
   headers: {
-    // "Authorization" : `Bearer ${this._jwt}`,
     'Content-Type': 'application/json'
   }
 });

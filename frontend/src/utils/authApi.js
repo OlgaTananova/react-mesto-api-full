@@ -1,5 +1,5 @@
 
-    const baseUrl = 'http://api.mestobyolga.nomoredomains.work';
+    const baseUrl = 'http://localhost:5000';
     const headers = { "Content-Type": "application/json"}
 
 
@@ -38,7 +38,6 @@
       return fetch(`${baseUrl}/users/me`, {
         method: "GET",
         headers: {
-          "Authorization" : `Bearer ${jwt}`,
           "Content-Type": "application/json"
         }
       })
