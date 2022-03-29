@@ -1,10 +1,12 @@
+require('dotenv').config();
+
 const express = require('express');
 const mongoose = require('mongoose');
 const {
   celebrate, Joi, isCelebrateError,
 } = require('celebrate');
 const cookieParser = require('cookie-parser');
-const { corsHandler } = require('./middleware/cors');
+const cors = require('cors');
 const {
   ERR_BAD_REQUEST,
   ERR_SERVER_ERROR,
@@ -13,7 +15,7 @@ const NotFoundError = require('./errors/NotFoundError');
 const { requestLogger, errorLogger } = require('./middleware/logger');
 
 const app = express();
-const { PORT = 5000 } = process.env;
+const { PORT = 3000 } = process.env;
 const userRouter = require('./routes/users');
 const cardRouter = require('./routes/cards');
 const login = require('./controllers/login');
@@ -34,11 +36,21 @@ async function start() {
 
 start()
   .then(() => {
-    app.use(corsHandler);
+    app.use(cors({
+      origin: [
+        'http://localhost:3000',
+        'http://mestobyolga.nomoredomains.work',
+        'https://mestobyolga.nomoredomains.work'],
+    }));
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
     app.use(cookieParser());
     app.use(requestLogger);
+    app.get('/crash-test', () => {
+      setTimeout(() => {
+        throw new Error('Сервер сейчас упадёт');
+      }, 0);
+    });
     app.post('/signin', celebrate({
       body: Joi.object().keys({
         email: Joi.string().email().label('Email').required()
