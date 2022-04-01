@@ -1,0 +1,21 @@
+
+.header__close-navigation-button {
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  box-sizing: border-box;
+  background-image: url(../../../images/close_icon.svg);
+  background-color: rgba(0, 0, 0, .5);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  align-self: flex-start;
+  transition: opacity .3s ease;
+}
+
+.header__close-navigation-button:hover {
+  opacity: .6;
+  cursor: pointer;
+}
