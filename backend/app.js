@@ -35,6 +35,7 @@ start()
   .then(() => {
     app.use(cors({
       origin: [
+        'http://localhost:3001',
         'http://localhost:3000',
         'http://mestobyolga.nomoredomains.work',
         'https://mestobyolga.nomoredomains.work'],
@@ -44,11 +45,6 @@ start()
     app.use(express.urlencoded({ extended: true }));
     app.use(cookieParser());
     app.use(requestLogger);
-    app.get('/crash-test', () => {
-      setTimeout(() => {
-        throw new Error('Сервер сейчас упадёт');
-      }, 0);
-    });
     app.post('/signin', celebrate(signinValidationSchema), login);
     app.post('/signup', celebrate(signupValidationSchema), createUser);
     app.use(userRouter);
