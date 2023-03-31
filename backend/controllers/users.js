@@ -9,7 +9,7 @@ const getUsers = (req, res, next) => {
   User.find({})
     .then((users) => {
       if (!users) {
-        throw new NotFoundError('Пользователи не найдены.');
+        throw new NotFoundError('The users were not found.');
       }
       res.send(users);
     })
@@ -22,7 +22,7 @@ const getUserById = (req, res, next) => {
   User.findById(id)
     .then((user) => {
       if (!user) {
-        throw new NotFoundError('Пользователь с таким id не найден.');
+        throw new NotFoundError('The user with the given id was not found.');
       }
       res.send(user);
     })
@@ -36,7 +36,7 @@ const getCurrentUser = (req, res, next) => {
   User.findById(id)
     .then((user) => {
       if (!user) {
-        throw new NotFoundError('Невозможно отобразить информацию о пользователе, возможно, нужна авторизация.');
+        throw new NotFoundError('Unable to show the user\'s info, probably, you need to login.');
       }
       res.send(user);
     })
@@ -55,7 +55,7 @@ const createUser = async (req, res, next) => {
   User.findOne({ email })
     .then((user) => {
       if (user) {
-        throw new ConflictError('Такой пользователь уже существует');
+        throw new ConflictError('The user has already existed.');
       } else {
         return bcrypt.hash(password, 10);
       }
@@ -76,7 +76,7 @@ const createUser = async (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new BadRequestError('Переданы некорректные данные'));
+        next(new BadRequestError('You typed incorrect data.'));
       } else {
         next(err);
       }
@@ -90,7 +90,7 @@ const updateUserProfile = (req, res, next) => {
   } = req.body;
   const id = req.user._id;
   if (!name || !about) {
-    throw new BadRequestError('Переданы некорректные данные для обновления данных пользователя.');
+    throw new BadRequestError('You typed incorrect data to update the user\'s info.');
   }
   User.findByIdAndUpdate(id, {
     name,
@@ -108,7 +108,7 @@ const updateUserAvatar = (req, res, next) => {
   const { avatar } = req.body;
   const id = req.user._id;
   if (!avatar) {
-    throw new BadRequestError('Переданы некорректные данные для обновления аватара.');
+    throw new BadRequestError('You typed incorrect data to update the user\'s avatar.');
   }
   User.findByIdAndUpdate(id, { avatar }, { new: true, runValidators: true })
     .then((user) => {

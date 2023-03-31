@@ -29,14 +29,14 @@ const deleteCard = (req, res, next) => {
   const { cardId } = req.params;
   const ownerId = req.user._id;
   Card.findById(cardId)
-    .orFail(() => next(new NotFoundError('Карточка с указанным id не найдена.')))
+    .orFail(() => next(new NotFoundError('The card with the given id was not found.')))
     .then((card) => {
       if (!card.owner.equals(ownerId)) {
-        return next(new ForbiddenError('Нельзя удалить чужую карточку.'));
+        return next(new ForbiddenError('It\'s prohibited to delete another user\'s card'));
       }
       return card.remove()
         .then(() => {
-          res.send({ message: 'Карточка удалена.' });
+          res.send({ message: 'The card was deleted.' });
         });
     })
     .catch(next);
@@ -51,7 +51,7 @@ const likeCard = (req, res, next) => {
   )
     .then((card) => {
       if (!card) {
-        throw new NotFoundError('Карточка с указанным id не найдена.');
+        throw new NotFoundError('The card with the given id was not found.');
       }
       res.send(card);
     })
@@ -65,7 +65,7 @@ const dislikeCard = (req, res, next) => {
   Card.findByIdAndUpdate(cardId, { $pull: { likes: req.user._id } }, { new: true })
     .then((card) => {
       if (!card) {
-        throw new NotFoundError('Карточка с указанным id не найдена.');
+        throw new NotFoundError('The card with the given id was not found.');
       }
       res.send(card);
     })

@@ -8,11 +8,21 @@ const login = (req, res, next) => {
   return User.findUserByCredentials(email, password)
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'some-secret-key', { expiresIn: '7d' });
-      res.send({ token });
+      res.cookie('jwt', token, {
+        httpOnly: true,
+        maxAge: 6.048e+8,
+        sameSite: 'none',
+        secure: true,
+      });
+      res.send({ message: 'Token was sent to cookie.' });
     })
     .catch((err) => {
       next(err);
     });
 };
 
-module.exports = login;
+const logout = (req, res) => {
+  res.clearCookie('jwt').send({ message: 'Token was deleted from cookies.' });
+};
+
+module.exports = { login, logout };

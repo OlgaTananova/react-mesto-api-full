@@ -6,7 +6,10 @@ const helmet = require('helmet');
 const { celebrate } = require('celebrate');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-const { signinValidationSchema, signupValidationSchema } = require('./middleware/validationSchema');
+const {
+  signinValidationSchema,
+  signupValidationSchema,
+} = require('./middleware/validationSchema');
 const NotFoundError = require('./errors/NotFoundError');
 const { requestLogger, errorLogger } = require('./middleware/logger');
 
@@ -14,17 +17,21 @@ const app = express();
 const { PORT = 3000 } = process.env;
 const userRouter = require('./routes/users');
 const cardRouter = require('./routes/cards');
-const login = require('./controllers/login');
+const { login, logout } = require('./controllers/login');
 const { createUser } = require('./controllers/users');
 const auth = require('./middleware/auth');
-const { celebrateErrorHandler, generalErrorHandler } = require('./middleware/errorHandler');
+const {
+  celebrateErrorHandler,
+  generalErrorHandler,
+} = require('./middleware/errorHandler');
+
+const { NODE_ENV } = process.env;
+const MONGO_URI = NODE_ENV === 'production' ? 'mongodb+srv://olgatananova:3106HS4bcDQ6tc3Y@cluster0.ytxayd2.mongodb.net/mesto'
+  : 'mongodb+srv://olgatananova:3106HS4bcDQ6tc3Y@cluster0.ytxayd2.mongodb.net/test';
 
 async function start() {
-  await mongoose.connect('mongodb://localhost:27017/mestodb', {
+  await mongoose.connect(MONGO_URI, {
     useNewUrlParser: true,
-    // Приложение не запускается, если оставить эти опции активными
-    // useCreateIndex: true,
-    // useFindAndModify: false,
   });
   app.listen(PORT, () => {
     console.log(`App listening on PORT ${PORT}`);
@@ -34,11 +41,8 @@ async function start() {
 start()
   .then(() => {
     app.use(cors({
-      origin: [
-        'http://localhost:3001',
-        'http://localhost:3000',
-        'http://mestobyolga.nomoredomains.work',
-        'https://mestobyolga.nomoredomains.work'],
+      origin: ['http://localhost:3001', 'http://localhost:3000', 'https://olgatananova.github.io'],
+      credentials: true,
     }));
     app.use(helmet());
     app.use(express.json());
@@ -47,16 +51,17 @@ start()
     app.use(requestLogger);
     app.post('/signin', celebrate(signinValidationSchema), login);
     app.post('/signup', celebrate(signupValidationSchema), createUser);
+    app.post('/signout', auth, logout);
     app.use(userRouter);
     app.use(cardRouter);
     app.use(auth, (req, res, next) => {
-      next(new NotFoundError('Маршрут не найден'));
+      next(new NotFoundError('The page was not found.'));
     });
     app.use(errorLogger);
     app.use(celebrateErrorHandler);
     app.use(generalErrorHandler);
   })
   .catch(() => {
-    console.log('Ошибка. Что-то пошло не так.');
+    console.log('Error, something went wrong...');
     process.exit();
   });

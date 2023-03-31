@@ -14,7 +14,7 @@ const celebrateErrorHandler = (err, req, res, next) => {
 
 const generalErrorHandler = (err, req, res, next) => {
   const statusCode = err.statusCode || ERR_SERVER_ERROR;
-  const message = statusCode === ERR_SERVER_ERROR ? 'На сервере произошла ошибка.' : err.message;
+  const message = statusCode === ERR_SERVER_ERROR ? 'There is the server error.' : err.message;
   res.status(statusCode).send({ message });
   next();
 };

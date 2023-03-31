@@ -8,13 +8,13 @@ const userSchema = new mongoose.Schema({
     type: String,
     minLength: 2,
     maxLength: 30,
-    default: 'Жак-Ив Кусто',
+    default: 'Jacques-Yves Cousteau',
   },
   about: {
     type: String,
     minLength: 2,
     maxLength: 30,
-    default: 'Исследователь',
+    default: 'Explorer',
   },
   avatar: {
     type: String,
@@ -45,12 +45,12 @@ userSchema.statics.findUserByCredentials = function findUserByCredentials(email,
   return this.findOne({ email }).select('+password')
     .then((user) => {
       if (!user) {
-        throw new UnauthorizedError('Неправильная почта или пароль.');
+        throw new UnauthorizedError('There are incorrect password or email.');
       }
       return bcrypt.compare(password, user.password)
         .then((matched) => {
           if (!matched) {
-            throw new UnauthorizedError('Неправильная почта или пароль.');
+            throw new UnauthorizedError('There are incorrect password or email.');
           }
           return user;
         });
