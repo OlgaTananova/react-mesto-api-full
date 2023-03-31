@@ -1,0 +1,17 @@
+
+.header__navigation-button {
+  width: 24px;
+  height: 24px;
+  background-image: url('../../../images/navigation_button.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: opacity .3s ease;
+  background-color: black;
+  padding: 0;
+  border: none;
+}
+
+.header__navigation-button:hover {
+  opacity: .6;
+  cursor: pointer;
+}
