@@ -26,8 +26,6 @@ const {
 } = require('./middleware/errorHandler');
 
 const { NODE_ENV } = process.env;
-const MONGO_URI = NODE_ENV === 'production' ? 'mongodb+srv://olgatananova:3106HS4bcDQ6tc3Y@cluster0.ytxayd2.mongodb.net/mesto'
-  : 'mongodb+srv://olgatananova:3106HS4bcDQ6tc3Y@cluster0.ytxayd2.mongodb.net/test';
 
 async function start() {
   await mongoose.connect(MONGO_URI, {
