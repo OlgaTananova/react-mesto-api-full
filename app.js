@@ -41,8 +41,9 @@ async function start() {
 start()
   .then(() => {
     app.use(cors({
-      origin: ['http://localhost:3001', 'http://localhost:3000', 'https://olgatananova.github.io'],
+      origin: ['http://localhost:3001', 'http://localhost:3000', 'https://olgatananova.github.io/react-mesto-auth'],
       credentials: true,
+      exposedHeaders: ['set-cookie'],
     }));
     app.use(helmet());
     app.use(express.json());

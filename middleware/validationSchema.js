@@ -12,7 +12,7 @@ const signinValidationSchema = {
     password: Joi.string().label('Password').required()
       .messages({
         'string.base': 'There is incorrect format of {#label}. It must be a string.',
-        'any.required': 'You have not typed {#label}, необходимо ввести {#label}.',
+        'any.required': 'You have not typed {#label}, please, type {#label}.',
         'string.empty': 'The field is empty, please, type {#label}.',
       }),
   }),
